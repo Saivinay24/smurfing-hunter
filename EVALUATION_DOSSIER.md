@@ -26,12 +26,15 @@
 **Criteria**: Novelty of the idea, originality, fresh perspective. Relevance of the problem, importance for the target audience.
 
 ### Novelty & Originality
--   **Multi-Factor Scoring**: Unlike binary ("Clean/Dirty") classifiers, we implemented a **Suspicion Score (0-100)** that combines:
-    -   *Graph Topology* (Centrality)
-    -   *Network proximity* (Geodesic distance to criminals)
-    -   *Behavioral Anomalies* (Peeling chains)
--   **Obfuscation Breaking**: We specifically targeted "Peeling Chains"—a technique often ignored by simple rule-based systems—by implementing a dedicated detection algorithm (`detect_peeling_chains`).
--   **Temporal Validation**: Our algorithms enforce time causality ($t_{in} < t_{out}$), solving the common "false positive" creation where money appears to loop but actually moved backwards in time.
+-   **Multi-Factor Scoring**: Unlike binary ("Clean/Dirty") classifiers, we implemented a **Suspicion Score (0-100)** using a weighted formula:
+    -   $Score = 0.35 \times Centrality + 0.35 \times Proximity + 0.20 \times Pattern + 0.10 \times Anomaly$
+    -   Prioritizes **Centrality** (network importance) and **Illicit Proximity** (distance to known criminals) as primary risk indicators
+-   **Obfuscation Breaking**: We specifically targeted "Peeling Chains" with **Flow Conservation** logic:
+    -   Detects 1-2% gas fee patterns (threshold: 2%) to identify realistic laundering behavior
+    -   Tracks sequential small withdrawals that traditional systems miss
+-   **Strict Temporal Validation**: Our algorithms enforce **strict chronological order** ($t_A < t_B < t_C$), not just $t_A \leq t_B$:
+    -   Prevents false positives from simultaneous or reverse-time transactions
+    -   Ensures detected patterns represent actual money flow sequences
 
 ### Impact & Relevance
 -   **RegTech Focus**: Financial compliance is a multi-billion dollar mandatory industry. This tool automates the manual "tracing" work done by forensic accountant.

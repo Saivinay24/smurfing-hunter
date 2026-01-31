@@ -28,17 +28,15 @@ Decentralized Finance (DeFi) allows for anonymous transfers, but regulators requ
 
 ### Key Features (Eval Ready)
 1.  **Pattern Detection Engine**:
-    -   **Fan-out/Fan-in**: Identifies split and merge topologies with *Temporal Validation* (Time $t_1 < t_2$).
-    -   **Peeling Chains**: Detects sequential small withdrawals used to hide significant funds (Obfuscation Breaking).
-    -   **Cyclic Graphs**: Finds money flowing in loops to obscure origin.
-    -   **Layered Laundering**: Traces multi-hop paths from known illicit sources.
+    -   **Fan-out/Fan-in**: Identifies split and merge topologies with **Strict Temporal Validation** ($Time_A < Time_B < Time_C$) enforcing chronological causality.
+    -   **Peeling Chains**: Detects sequential small withdrawals (1-2% gas fees) with **Flow Conservation** logic to identify obfuscation patterns.
+    -   **Cyclic Graphs**: Finds money flowing in loops to obscure origin, with temporal checks to prevent false positives.
+    -   **Layered Laundering**: Traces multi-hop paths from known illicit sources through intermediate wallets.
 
 2.  **Suspicion Scoring Model (0-100)**:
-    -   Calculates a risk score based on:
-        -   **Centrality**: PageRank & Betweenness (Network importance).
-        -   **Illicit Proximity**: Geodesic distance to known bad actors.
-        -   **Pattern Involvement**: Participation in detected laundering schemes.
-        -   **Structural Anomalies**: Statistical outliers in transaction behavior.
+    -   Weighted formula: $Score = \alpha \times Centrality + \beta \times Proximity\_to\_Illicit + \gamma \times Pattern\_Involvement + \delta \times Structural\_Anomaly$
+    -   Component weights: **Centrality (35%)**, **Illicit Proximity (35%)**, Pattern Involvement (20%), Structural Anomaly (10%)
+    -   Combines graph metrics with behavioral analysis for comprehensive risk assessment.
 
 3.  **Visualization Dashboard**:
     -   Interactive HTML graph with risk hotspots.
