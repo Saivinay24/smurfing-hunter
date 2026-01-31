@@ -79,11 +79,11 @@ class PatternDetector:
                 time_in = min(edge_data_in['timestamps']) if 'timestamps' in edge_data_in else edge_data_in['timestamp']
                 
                 for dest in self.graph.successors(intermediate):
-                    # Temporal Check: Outgoing transaction must happen AFTER incoming
+                    # Temporal Check: Outgoing transaction must happen STRICTLY AFTER incoming
                     edge_data_out = self.graph[intermediate][dest]
                     time_out = max(edge_data_out['timestamps']) if 'timestamps' in edge_data_out else edge_data_out['timestamp']
                     
-                    if time_out >= time_in:
+                    if time_out > time_in:
                         destination_candidates[dest].add(intermediate)
             
             # Find destinations that receive from multiple intermediates (fan-in)
@@ -159,7 +159,7 @@ class PatternDetector:
                             # We need a transaction that happens AFTER current_time_min
                             valid_next_time = None
                             for t in tx_times:
-                                if t >= current_time_min:
+                                if t > current_time_min:
                                     valid_next_time = t
                                     break
                             
@@ -284,7 +284,7 @@ class PatternDetector:
         self.detected_patterns.extend(patterns)
         return patterns
 
-    def detect_peeling_chains(self, threshold: float = 0.1) -> List[SmurfingPattern]:
+    def detect_peeling_chains(self, threshold: float = 0.02) -> List[SmurfingPattern]:
         """
         Detect peeling chains: A -> B -> C -> D where small amounts are peeled off.
         Implementation moved from graph_builder to fully integrate with detection.

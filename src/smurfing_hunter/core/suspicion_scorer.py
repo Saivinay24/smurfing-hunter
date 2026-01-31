@@ -36,10 +36,10 @@ class SuspicionScorer:
         
         # Combine scores with weights
         weights = {
-            'centrality': 0.20,
-            'illicit_proximity': 0.35,
-            'pattern_involvement': 0.30,
-            'structural_anomaly': 0.15
+            'centrality': 0.35,        # Alpha (Important)
+            'illicit_proximity': 0.35, # Beta (Important)
+            'pattern_involvement': 0.20,
+            'structural_anomaly': 0.10
         }
         
         for wallet in self.graph.nodes():

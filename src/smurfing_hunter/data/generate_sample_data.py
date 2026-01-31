@@ -194,8 +194,8 @@ class DataGenerator:
             source = wallets[i]
             dest = wallets[i + 1]
             
-            # Peel off 5-15% to another wallet (fee/payment)
-            peel_amount = remaining * random.uniform(0.05, 0.15)
+            # Peel off 0.5-2% to another wallet (simulating gas/small peel)
+            peel_amount = remaining * random.uniform(0.005, 0.020)
             peel_dest = self.generate_wallet_id()
             
             # Main transfer (85-95% of remaining)
