@@ -8,6 +8,9 @@ import os
 import sys
 from datetime import datetime
 
+# Add src to python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
+
 def print_banner(text, char="="):
     """Print a formatted banner"""
     width = 80
@@ -30,10 +33,11 @@ def main():
     # Step 1: Generate Sample Data
     print_section("STEP 1: Generating Sample Blockchain Data")
     
-    from generate_sample_data import DataGenerator
+    from smurfing_hunter.data.generate_sample_data import DataGenerator
     
     generator = DataGenerator(seed=42)
-    transactions_file, illicit_file = generator.generate_complete_dataset()
+    os.makedirs('data', exist_ok=True)
+    transactions_file, illicit_file = generator.generate_complete_dataset(output_dir='data')
     
     print(f"✓ Generated {transactions_file}")
     print(f"✓ Generated {illicit_file}")
@@ -41,7 +45,7 @@ def main():
     # Step 2: Load and Build Graph
     print_section("STEP 2: Building Blockchain Transaction Graph")
     
-    from graph_builder import BlockchainGraph
+    from smurfing_hunter.core.graph_builder import BlockchainGraph
     
     blockchain = BlockchainGraph()
     blockchain.load_transactions(transactions_file)
@@ -55,7 +59,7 @@ def main():
     # Step 3: Detect Patterns
     print_section("STEP 3: Detecting Money Laundering Patterns")
     
-    from pattern_detector import PatternDetector
+    from smurfing_hunter.core.pattern_detector import PatternDetector
     
     detector = PatternDetector(blockchain)
     patterns = detector.detect_all_patterns_from_illicit()
@@ -77,7 +81,7 @@ def main():
     # Step 4: Calculate Suspicion Scores
     print_section("STEP 4: Calculating Wallet Suspicion Scores")
     
-    from suspicion_scorer import SuspicionScorer
+    from smurfing_hunter.core.suspicion_scorer import SuspicionScorer
     
     scorer = SuspicionScorer(blockchain, detector)
     scores = scorer.calculate_all_scores()
@@ -160,7 +164,7 @@ def main():
     # Step 7: Generate Visualizations
     print_section("STEP 7: Creating Visualizations")
     
-    from visualizer import GraphVisualizer
+    from smurfing_hunter.utils.visualizer import GraphVisualizer
     
     output_dir = "demo_results"
     os.makedirs(output_dir, exist_ok=True)

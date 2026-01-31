@@ -44,10 +44,10 @@
 
 ### Solution Design
 The system follows a modular pipeline architecture (Separation of Concerns):
-1.  **Ingestion Layer** (`graph_builder.py`): Raw CSV $\to$ Directed Graph.
-2.  **Detection Layer** (`pattern_detector.py`): Specific topology mining (Fan-out, Cycles, Layers).
-3.  **Analysis Layer** (`suspicion_scorer.py`): Mathematical scoring model.
-4.  **Presentation Layer** (`visualizer.py`): Human-readable dashboards.
+1.  **Ingestion Layer** (`src/smurfing_hunter/core/graph_builder.py`): Raw CSV $\to$ Directed Graph.
+2.  **Detection Layer** (`src/smurfing_hunter/core/pattern_detector.py`): Specific topology mining (Fan-out, Cycles, Layers).
+3.  **Analysis Layer** (`src/smurfing_hunter/core/suspicion_scorer.py`): Mathematical scoring model.
+4.  **Presentation Layer** (`src/smurfing_hunter/utils/visualizer.py`): Human-readable dashboards.
 
 ### Roadmap Feasibility
 -   **Phase 1 (Completed)**: Core graph algorithms & static detection.
@@ -88,7 +88,7 @@ We have solved **all challenges** listed in the problem statement:
 | **Suspicion Score** | ✅ **DONE** | `SuspicionScorer` calculates 0-100 risk scores |
 
 ### Verification
--   **Run the Demo**: `python run_demo.py`
+-   **Run the Demo**: `python scripts/run_demo.py`
     -   Generates synthetic data involving 1000+ transactions.
     -   Successfully flags known illicit wallets.
     -   Produces visual proof of smurfing rings.

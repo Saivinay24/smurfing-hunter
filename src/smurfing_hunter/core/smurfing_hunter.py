@@ -7,11 +7,11 @@ import argparse
 import os
 from datetime import datetime
 
-from graph_builder import BlockchainGraph
-from pattern_detector import PatternDetector
-from suspicion_scorer import SuspicionScorer
-from visualizer import GraphVisualizer
-from generate_sample_data import DataGenerator
+from .graph_builder import BlockchainGraph
+from .pattern_detector import PatternDetector
+from .suspicion_scorer import SuspicionScorer
+from ..utils.visualizer import GraphVisualizer
+from ..data.generate_sample_data import DataGenerator
 
 
 class SmurfingHunter:
@@ -214,13 +214,13 @@ def main():
     parser.add_argument(
         '--transactions', 
         type=str, 
-        default='transactions.csv',
+        default='data/transactions.csv',
         help='Path to transactions CSV file'
     )
     parser.add_argument(
         '--illicit',
         type=str,
-        default='illicit_wallets.csv',
+        default='data/illicit_wallets.csv',
         help='Path to illicit wallets CSV file'
     )
     parser.add_argument(
@@ -246,7 +246,8 @@ def main():
     if args.generate_data:
         print("Generating sample data...")
         generator = DataGenerator(seed=42)
-        transactions_file, illicit_file = generator.generate_complete_dataset()
+        os.makedirs('data', exist_ok=True)
+        transactions_file, illicit_file = generator.generate_complete_dataset(output_dir='data')
         print()
         args.transactions = transactions_file
         args.illicit = illicit_file
