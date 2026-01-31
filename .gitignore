@@ -42,6 +42,8 @@ illicit_wallets/
 !requirements.txt
 !README.md
 !USAGE.md
+!demo_results/
+
 
 # IDEs
 .vscode/
