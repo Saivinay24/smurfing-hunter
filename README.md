@@ -1,81 +1,115 @@
-# Smurfing Hunter: Money Laundering Detection in Blockchain
+# Smurfing Hunter: Money Laundering Detection System
 
-A Graph Neural Network-based system to detect money laundering patterns (Smurfing/Layering) in blockchain transaction networks.
+**Domain**: RegTech / Crypto-Forensics / Graph Theory  
+**Solution Type**: Graph Analysis & Pattern Recognition System
 
-## Overview
+---
 
-This tool identifies "Fan-out / Fan-in" structures where dirty money is:
-1. Split into many small transactions (Fan-out)
-2. Passed through intermediate wallets (Layering)
-3. Re-aggregated in clean wallets (Fan-in)
+## 🚀 Problem Statement
 
-## Features
+Decentralized Finance (DeFi) allows for anonymous transfers, but regulators require compliance with Anti-Money Laundering (AML) laws. A common laundering technique is **"Smurfing"** or **"Layering,"** where a large sum of dirty money is broken into hundreds of small transactions (fan-out), passed through multiple intermediate wallets (layering), and then re-aggregated (fan-in).
 
-- **Topology Detection**: Identifies gather-scatter and cyclic patterns
-- **Obfuscation Handling**: Accounts for peeling chains and time delays
-- **Suspicion Scoring**: Calculates risk scores based on graph centrality and illicit connections
-- **Visualization**: Interactive and static graph visualizations with highlighted patterns
+**Challenges addressed:**
+1.  **Topology Identification**: Detecting "Fan-out / Fan-in", "Cyclic", and "Gather-Scatter" patterns.
+2.  **Obfuscation Breaking**: Identifying "Peeling Chains" and accounting for time delays/amount variations.
 
-## Quick Start (One Command!)
+---
+
+## 💡 Solution Overview
+
+**Smurfing Hunter** is a comprehensive Python-based forensic tool that detects, analyzes, and visualizes money laundering patterns in blockchain transaction networks.
+
+### Technical Stack
+-   **Core**: `Python 3.8+`
+-   **Graph Processing**: `NetworkX` (Directed Graph Analysis)
+-   **Data Processing**: `Pandas`, `NumPy`
+-   **Visualization**: `PyVis` (Interactive), `Matplotlib` (Static)
+-   **Statistics**: `SciPy` (Z-score anomaly detection)
+
+### Key Features (Eval Ready)
+1.  **Pattern Detection Engine**:
+    -   **Fan-out/Fan-in**: Identifies split and merge topologies with *Temporal Validation* (Time $t_1 < t_2$).
+    -   **Peeling Chains**: Detects sequential small withdrawals used to hide significant funds (Obfuscation Breaking).
+    -   **Cyclic Graphs**: Finds money flowing in loops to obscure origin.
+    -   **Layered Laundering**: Traces multi-hop paths from known illicit sources.
+
+2.  **Suspicion Scoring Model (0-100)**:
+    -   Calculates a risk score based on:
+        -   **Centrality**: PageRank & Betweenness (Network importance).
+        -   **Illicit Proximity**: Geodesic distance to known bad actors.
+        -   **Pattern Involvement**: Participation in detected laundering schemes.
+        -   **Structural Anomalies**: Statistical outliers in transaction behavior.
+
+3.  **Visualization Dashboard**:
+    -   Interactive HTML graph with risk hotspots.
+    -   Static reports of detected patterns.
+    -   Distribution plots of suspicion scores.
+
+---
+
+## 🛠️ Installation
 
 ```bash
-# Run the complete demonstration
-python run_demo.py
-```
+# 1. Clone the repository
+git clone <repo-url>
+cd smurfing-hunter
 
-This single script will:
-- Generate sample blockchain data
-- Detect laundering patterns
-- Calculate suspicion scores
-- Create visualizations
-- Generate risk reports
-
-**Demo runs in ~5 seconds and shows all results!**
-
-## Installation
-
-```bash
-# Create virtual environment (recommended)
+# 2. Create virtual environment (Optional but Recommended)
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate  # Windows: venv\Scripts\activate
 
-# Install dependencies
+# 3. Install dependencies
 pip install -r requirements.txt
 ```
 
-## Usage
+---
 
-### Option 1: Run Complete Demo (Recommended)
+## ⚡ Usage
+
+### Quick Start (Verification Demo)
+Run the complete end-to-end demonstration. This generates sample data, detects patterns, and builds the dashboard.
+
 ```bash
 python run_demo.py
 ```
+*Expected Output*: ~24 patterns detected, Risk Report generated, 5+ visualization files.
 
-### Option 2: Full Analysis with Custom Data
+### Analyze Your Own Data
 ```bash
 python smurfing_hunter.py --transactions data.csv --illicit illicit.csv --output results
 ```
 
-### Option 3: Generate Sample Data Only
+### Investigate Specific Wallet
 ```bash
-python generate_sample_data.py
+python smurfing_hunter.py --investigate 0x123abc...
 ```
 
-## Data Format
+---
 
-### transactions.csv
-- Source_Wallet_ID: Origin wallet address
-- Dest_Wallet_ID: Destination wallet address
-- Timestamp: Transaction timestamp
-- Amount: Transaction amount
-- Token_Type: Cryptocurrency type
+## 📊 Results & Outcomes
 
-### illicit_wallets.csv
-- Wallet_ID: Known illicit wallet address
-- Reason: Why it's flagged as illicit
+The system produces a comprehensive `output/` directory containing:
 
-## Output
+1.  **`risk_report.txt`**: Detailed assessment of top suspicious wallets.
+    -   *Example*: "Wallet 0x8f2... | Score: 92.5 (CRITICAL) | Involved in 3 Peeling Chains"
+2.  **`visualizations/full_graph.html`**: Interactive network map.
+    -   🔴 Red nodes: Known Illicit
+    -   🟠 Orange nodes: High Risk (Score > 60)
+3.  **Pattern Plots**: PNG images of every detected laundering topology.
 
-- Laundering graph visualization (HTML and PNG)
-- Suspicion scores for all wallets
-- Detected pattern statistics
-- Risk assessment report
+---
+
+## 📂 Project Structure
+
+```text
+.
+├── smurfing_hunter.py       # Main CLI entry point
+├── run_demo.py              # End-to-end demonstration script
+├── pattern_detector.py      # Core logic for identifying laundering patterns
+├── suspicion_scorer.py      # Risk scoring algorithm (Centrality + Proximity)
+├── graph_builder.py         # Graph construction & feature extraction
+├── visualizer.py            # Dashboard & Plot generation
+├── generate_sample_data.py  # Synthetic data generator for testing
+├── requirements.txt         # Dependencies
+└── README.md                # Documentation
+```

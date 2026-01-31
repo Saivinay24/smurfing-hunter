@@ -181,38 +181,7 @@ class BlockchainGraph:
         
         return self.graph.subgraph(nodes).copy()
     
-    def detect_peeling_chain(self, wallet: str, threshold: float = 0.1) -> List[str]:
-        """
-        Detect peeling chain pattern where small amounts are peeled off at each hop
-        
-        Args:
-            wallet: Starting wallet
-            threshold: Maximum proportion of amount that can be peeled off
-        """
-        chain = [wallet]
-        current = wallet
-        
-        while True:
-            successors = list(self.graph.successors(current))
-            if len(successors) != 1:
-                break
-            
-            next_wallet = successors[0]
-            
-            # Check if amount sent to next is majority
-            total_sent = self.graph.nodes[current]['total_sent']
-            amount_to_next = self.graph[current][next_wallet]['amount']
-            
-            if amount_to_next / total_sent < (1 - threshold):
-                break
-            
-            chain.append(next_wallet)
-            current = next_wallet
-            
-            if len(chain) > 100:  # Prevent infinite loops
-                break
-        
-        return chain if len(chain) > 2 else []
+
     
     def get_transaction_timeline(self, path: List[str]) -> List[datetime]:
         """
