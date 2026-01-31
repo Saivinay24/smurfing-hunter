@@ -43,6 +43,18 @@ Decentralized Finance (DeFi) allows for anonymous transfers, but regulators requ
     -   Static reports of detected patterns.
     -   Distribution plots of suspicion scores.
 
+### Technical Design Decisions
+
+**Peeling Chain Threshold Selection:**  
+We set the peeling chain detection threshold at **2%** based on real-world blockchain economics:
+
+-   **Ethereum Gas Fees**: Typical transaction fees range from 0.5-1.5% of transaction value during normal network conditions
+-   **Solana Fees**: Even lower (~0.00025 SOL per transaction), but intermediate wallet management adds overhead
+-   **Obfuscation Overhead**: Laundering operations incur additional costs (exchange fees, bridge fees, mixer fees)
+-   **Detection Window**: The 2% threshold captures realistic "peeling" behavior where small amounts (1-2%) are systematically withdrawn at each hop to pay for operational costs while preserving the bulk of illicit funds
+
+This domain-informed threshold prevents false positives from legitimate transaction fees while detecting actual obfuscation patterns.
+
 ---
 
 ## 🛠️ Installation
